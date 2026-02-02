@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Linketinder - Cadastro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+    <div class="card shadow p-4" style="max-width: 600px; margin: auto;">
+        <h2 class="text-center mb-4">🚀 Novo Candidato</h2>
+        
+        <form id="formCandidato">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label>Nome</label>
+                    <input type="text" id="nome" class="form-control" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label>Sobrenome</label>
+                    <input type="text" id="sobrenome" class="form-control" required>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label>Email</label>
+                <input type="email" id="email" class="form-control" required>
+            </div>
+            
+            <div class="mb-3">
+                <label>CPF</label>
+                <input type="text" id="cpf" class="form-control" required>
+            </div>
+            
+            <div class="mb-3">
+                <label>País</label>
+                <input type="text" id="pais" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label>Senha</label>
+                <input type="password" id="senha" class="form-control" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Cadastrar</button>
+        </form>
+        <div id="resultado" class="mt-3 text-center"></div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('formCandidato').addEventListener('submit', async (e) => {
+        e.preventDefault(); 
+
+        
+        const candidato = {
+            nome: document.getElementById('nome').value,
+            sobrenome: document.getElementById('sobrenome').value,
+            email: document.getElementById('email').value,
+            cpf: document.getElementById('cpf').value,
+            pais: document.getElementById('pais').value,
+            senha: document.getElementById('senha').value
+        };
+
+        try {
+            
+            const response = await fetch('http://localhost:8080/candidatos', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(candidato)
+            });
+
+            if (response.ok) {
+                document.getElementById('resultado').innerHTML = 
+                    '<div class="alert alert-success">Sucesso! Candidato cadastrado.</div>';
+                document.getElementById('formCandidato').reset();
+            } else {
+                document.getElementById('resultado').innerHTML = 
+                    '<div class="alert alert-danger">Erro ao cadastrar. Verifique o console.</div>';
+            }
+        } catch (erro) {
+            console.error(erro);
+            alert("Erro de conexão! O Backend está rodando?");
+        }
+    });
+</script>
+
+</body>
+</html>

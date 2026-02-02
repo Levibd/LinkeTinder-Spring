@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Linketinder - Vagas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">💼 Vagas Disponíveis</h1>
+    <div class="text-center mb-4">
+        <button onclick="carregarVagas()" class="btn btn-success">Atualizar Lista</button>
+        <a href="cadastro.html" class="btn btn-outline-primary">Ir para Cadastro</a>
+    </div>
+
+    <div id="lista-vagas" class="row"></div>
+</div>
+
+<script>
+    async function carregarVagas() {
+        try {
+            
+            const response = await fetch('http://localhost:8080/vagas');
+            const vagas = await response.json();
+
+            const container = document.getElementById('lista-vagas');
+            container.innerHTML = ''; 
+
+            vagas.forEach(vaga => {
+                
+                const card = `
+                    <div class="col-md-4 mb-3">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title text-primary">${vaga.nome}</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">
+                                    Empresa: ${vaga.empresa ? vaga.empresa.nome : 'Confidencial'}
+                                </h6>
+                                <p class="card-text">${vaga.descricao}</p>
+                                <span class="badge bg-secondary">${vaga.local}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += card;
+            });
+
+        } catch (erro) {
+            console.error(erro);
+            alert("Erro ao buscar vagas. O Backend subiu?");
+        }
+    }
+
+    
+    carregarVagas();
+</script>
+
+</body>
+</html>

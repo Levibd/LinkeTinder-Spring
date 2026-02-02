@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  postgres-nucleo:
+    image: postgres:16-alpine
+    container_name: db_linketinder_nucleo
+    environment:
+      - POSTGRES_DB=linketinder_nucleo
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata_nucleo:/var/lib/postgresql/data
+
+  postgres-competencias:
+    image: postgres:16-alpine
+    container_name: db_linketinder_competencias
+    environment:
+      - POSTGRES_DB=linketinder_competencias
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata_competencias:/var/lib/postgresql/data
+
+volumes:
+  pgdata_nucleo:
+  pgdata_competencias:
